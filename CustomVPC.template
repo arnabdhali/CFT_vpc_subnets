@@ -1,0 +1,312 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Metadata": {
+		"AWS::CloudFormation::Designer": {
+			"1533ff44-b854-4d68-bd12-a60237369e23": {
+				"size": {
+					"width": 150,
+					"height": 150
+				},
+				"position": {
+					"x": 330,
+					"y": 30
+				},
+				"z": 1,
+				"embeds": [],
+				"iscontainedinside": [
+					"df99fa47-4977-4548-8875-6d419ceb1747"
+				]
+			},
+			"df99fa47-4977-4548-8875-6d419ceb1747": {
+				"size": {
+					"width": 150,
+					"height": 150
+				},
+				"position": {
+					"x": 60,
+					"y": 90
+				},
+				"z": 1,
+				"embeds": []
+			},
+			"15a10a2e-ccd5-4dac-a660-5538ac2bcf1d": {
+				"size": {
+					"width": 150,
+					"height": 150
+				},
+				"position": {
+					"x": 750,
+					"y": 120
+				},
+				"z": 1,
+				"embeds": [],
+				"iscontainedinside": [
+					"df99fa47-4977-4548-8875-6d419ceb1747"
+				]
+			},
+			"ae27eb3a-c73d-486d-a865-63dd82454199": {
+				"size": {
+					"width": 150,
+					"height": 150
+				},
+				"position": {
+					"x": 510,
+					"y": 30
+				},
+				"z": 1,
+				"embeds": [],
+				"iscontainedinside": [
+					"df99fa47-4977-4548-8875-6d419ceb1747"
+				]
+			},
+			"768570c0-d18a-45f5-b299-46e8d6e5d5ae": {
+				"size": {
+					"width": 150,
+					"height": 150
+				},
+				"position": {
+					"x": 930,
+					"y": 90
+				},
+				"z": 1,
+				"embeds": [],
+				"iscontainedinside": [
+					"df99fa47-4977-4548-8875-6d419ceb1747"
+				]
+			},
+			"728e328a-55d9-4ce8-869d-edda23e8d8b4": {
+				"source": {
+					"id": "ae27eb3a-c73d-486d-a865-63dd82454199"
+				},
+				"target": {
+					"id": "1533ff44-b854-4d68-bd12-a60237369e23"
+				},
+				"z": 1
+			},
+			"2c1aee4e-9de2-4bfc-bea1-65dcca0f14a3": {
+				"size": {
+					"width": 60,
+					"height": 60
+				},
+				"position": {
+					"x": 848.4370743623878,
+					"y": -26.626351192334152
+				},
+				"z": 0,
+				"embeds": []
+			},
+			"7a331854-601a-4954-8ddc-0070bc9f274d": {
+				"size": {
+					"width": 60,
+					"height": 60
+				},
+				"position": {
+					"x": 1025.7759064978384,
+					"y": -40.267799818138045
+				},
+				"z": 0,
+				"embeds": []
+			}
+		}
+	},
+	"Resources": {
+		"CustomVPC": {
+			"Type": "AWS::EC2::VPC",
+			"Properties": {
+				"CidrBlock": "10.0.0.0/26",
+				"EnableDnsHostnames": "True",
+				"EnableDnsSupport": "True",
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomVPC"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "df99fa47-4977-4548-8875-6d419ceb1747"
+				}
+			}
+		},
+		"CustomPubSubnet": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone": "ap-south-1a",
+				"CidrBlock": "10.0.0.0/27",
+				"MapPublicIpOnLaunch": "True",
+				"VpcId": {
+					"Ref": "CustomVPC"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomPubSubnet"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "1533ff44-b854-4d68-bd12-a60237369e23"
+				}
+			}
+		},
+		"CustomPvtSubnet": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"AvailabilityZone": "ap-south-1b",
+				"CidrBlock": "10.0.0.32/27",
+				"MapPublicIpOnLaunch": "False",
+				"VpcId": {
+					"Ref": "CustomVPC"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomPvtSubnet"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "15a10a2e-ccd5-4dac-a660-5538ac2bcf1d"
+				}
+			}
+		},
+		"CustomPubRT": {
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "CustomVPC"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomPubRT"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "ae27eb3a-c73d-486d-a865-63dd82454199"
+				}
+			}
+		},
+		"CustomPubRTAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "CustomPubSubnet"
+				},
+				"RouteTableId": {
+					"Ref": "CustomPubRT"
+				}
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "728e328a-55d9-4ce8-869d-edda23e8d8b4"
+				}
+			}
+		},
+		"CustomPvtRT": {
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "CustomVPC"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomPvtRT"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "768570c0-d18a-45f5-b299-46e8d6e5d5ae"
+				}
+			}
+		},
+		"CustomPvtRTAssociation": {
+			"Type": "AWS::EC2::SubnetRouteTableAssociation",
+			"Properties": {
+				"SubnetId": {
+					"Ref": "CustomPvtSubnet"
+				},
+				"RouteTableId": {
+					"Ref": "CustomPvtRT"
+				}
+			}
+		},
+		"CustomIGW": {
+			"Type": "AWS::EC2::InternetGateway",
+			"Properties": {
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomIGW"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "2c1aee4e-9de2-4bfc-bea1-65dcca0f14a3"
+				}
+			}
+		},
+		"CustomIGWVPCAttach": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "CustomVPC"
+                },
+                "InternetGatewayId": {
+                    "Ref": "CustomIGW"
+                }
+            }
+			},
+		"CustomEIP": {
+            "Type": "AWS::EC2::EIP",
+            "Properties": {
+                "Domain": "vpc"
+            }
+        },
+		"CustomNATGW": {
+			"Type": "AWS::EC2::NatGateway",
+			"Properties": {
+			"AllocationId": {
+                    "Fn::GetAtt": [
+                        "CustomEIP",
+                        "AllocationId"
+                    ]
+                },
+				"SubnetId": {
+					"Ref": "CustomPubSubnet"
+				},
+				"Tags": [{
+					"Key": "Name",
+					"Value": "CustomNATGW"
+				}]
+			},
+			"Metadata": {
+				"AWS::CloudFormation::Designer": {
+					"id": "7a331854-601a-4954-8ddc-0070bc9f274d"
+				}
+			}
+		},
+
+		"CustomPubRoute": {
+			"Type": "AWS::EC2::Route",
+			"Properties": {
+			    "RouteTableId": {
+					"Ref": "CustomPubRT"
+				},
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"GatewayId": {
+					"Ref": "CustomIGW"
+				}
+			}
+		},
+		"CustomPvtRoute": {
+			"Type": "AWS::EC2::Route",
+			"Properties": {
+				"RouteTableId": {
+						"Ref": "CustomPvtRT"
+				},
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"NatGatewayId": {
+					"Ref": "CustomNATGW"
+				}
+			}
+		}
+
+	}
+}
